@@ -1,0 +1,3 @@
+"""
+Core model implementation module
+""" 
