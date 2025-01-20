@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "numpy",
-        "torch",  # We'll likely need PyTorch for deep learning
+        "torch",
     ],
     author="Robin Newhouse",
     description="An LLM implementation from scratch",
