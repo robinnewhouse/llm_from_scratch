@@ -11,9 +11,9 @@ inputs = torch.tensor(
     ]
 )
 
-x_2 = inputs[1] # the second input element
-d_in = inputs.shape[1] # the input embedding size, d_in=3
-d_out = 2 # the output embedding size, d_out=2
+x_2 = inputs[1]  # the second input element
+d_in = inputs.shape[1]  # the input embedding size, d_in=3
+d_out = 2  # the output embedding size, d_out=2
 
 torch.manual_seed(123)
 
@@ -56,7 +56,7 @@ print(attn_scores_2)
 # compute the attention weights
 # scale the attention scores by sqrt(d_k)
 d_k = keys.shape[-1]
-attn_weights_2 = torch.softmax(attn_scores_2 / d_k**.5, dim=-1)
+attn_weights_2 = torch.softmax(attn_scores_2 / d_k**0.5, dim=-1)
 print("attn_weights_2")
 print(attn_weights_2)
 print(attn_weights_2.sum())
@@ -64,3 +64,41 @@ print(attn_weights_2.sum())
 context_vec_2 = attn_weights_2 @ values
 print("context_vec_2")
 print(context_vec_2)
+
+"""
+The shape of this
+tensor is (b, num_heads,
+num_tokens, head_dim)
+= (1, 2, 3, 4).
+"""
+a = torch.tensor(
+    [
+        [
+            [
+                [0.2745, 0.6584, 0.2775, 0.8573],
+                [0.8993, 0.0390, 0.9268, 0.7388],
+                [0.7179, 0.7058, 0.9156, 0.4340],
+            ],
+            [
+                [0.0772, 0.3565, 0.1479, 0.5331],
+                [0.4066, 0.2318, 0.4545, 0.9737],
+                [0.4606, 0.5159, 0.4220, 0.5786],
+            ],
+        ]
+    ]
+)
+print(a)
+print(a.transpose(2, 3))
+print(a @ a.transpose(2, 3))
+
+first_head = a[0, 0, :, :]
+first_res = first_head @ first_head.T
+print("First head:\n", first_head)
+print("First result:\n", first_res)
+second_head = a[0, 1, :, :]
+second_res = second_head @ second_head.T
+print("\nSecond head:\n", second_head)
+print("\nSecond result:\n", second_res)
+
+
+
