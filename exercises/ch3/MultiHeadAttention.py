@@ -75,8 +75,35 @@ if __name__ == "__main__":
 
     batch = torch.stack((inputs, inputs), dim=0)
     context_length = batch.shape[1]  # This is the number of tokens
-    d_in, d_out = 3, 2
+    batch_size, context_length, d_in = batch.shape
+    d_out = 2
 
     mha = MultiHeadAttention(d_in, d_out, context_length, 0.0, num_heads=2)
     context_vecs = mha(batch)
-    print(context_vecs)
+    # print(context_vecs)
+
+    # GPT-2 (small) specifications
+    gpt2_d_model = 768  # embedding dimension
+    gpt2_num_heads = 12
+    gpt2_context_length = 1024
+    dropout = 0.1  # typical dropout value for transformer models
+    
+    # Initialize GPT-2 sized attention module
+    gpt2_mha = MultiHeadAttention(
+        d_in=gpt2_d_model,
+        d_out=gpt2_d_model,
+        context_length=gpt2_context_length,
+        dropout=dropout,
+        num_heads=gpt2_num_heads
+    )
+    
+    # Create a sample input tensor with GPT-2 dimensions
+    sample_batch_size = 10
+    sample_seq_length = 100  # Using a smaller sequence length for testing
+    sample_input = torch.randn(sample_batch_size, sample_seq_length, gpt2_d_model)
+    
+    # Test the attention module
+    output = gpt2_mha(sample_input)
+    print(f"\nGPT-2 attention output shape: {output.shape}")
+
+
